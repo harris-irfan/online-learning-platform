@@ -1,3 +1,9 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Certification
+
+
+class CertificationAdmin(admin.ModelAdmin):
+    list_display = ('enrollment_id',)
+
+admin.site.register(Certification, CertificationAdmin)

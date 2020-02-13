@@ -17,4 +17,5 @@ class Enrollment(models.Model):
     @classmethod
     def create(cls, course_id, student_id):
         enrollment = cls(course_id=course_id, student_id=student_id)
+        enrollment.save()
         return enrollment
