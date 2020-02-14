@@ -14,18 +14,22 @@ class CourseView(viewsets.ModelViewSet):
 @api_view(['GET',])
 def course_content_view(request):
     data = {}
-    if Course.objects.filter(id=request.GET['id']).exists():
-        data['video_link'] = Course.objects.get(id=request.GET['id']).video_link
-        data['content_html_path'] = Course.objects.get(id=request.GET['id']).content_html_path
+
+    if request.user.is_staff or Enrollment.objects.filter(course_id = request.GET['course_id'], student_id = request.user.id).exists():
+        if Course.objects.filter(id=request.GET['id']).exists():
+            data['video_link'] = Course.objects.get(id=request.GET['id']).video_link
+            data['content_html_path'] = Course.objects.get(id=request.GET['id']).content_html_path
+        else:
+            data['response'] = 'Course not found'
     else:
-        data['response'] = 'Course not found'
+        data['response'] = 'You must be enrolled in the course to view course content.'
 
     return Response(data)
 
+
 @api_view(['POST',])
-def enroll_view(request):
+def enrollment_view(request):
     data = {}
-    # data['response'] = 'test'
     requested_course = request.GET['course_id']
     if Course.objects.filter(id=requested_course).exists():
         Enrollment.create(Course.objects.get(id=requested_course), request.user)

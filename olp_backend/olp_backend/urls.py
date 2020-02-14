@@ -17,17 +17,13 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 
-from course.api.views import CourseView, course_content_view, enroll_view
-
-router = routers.DefaultRouter()
-router.register(r'', CourseView, 'course')
+# router = routers.DefaultRouter()
+# router.register(r'', CourseView, 'course')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/account/', include('account.api.urls', 'account_api')),
-    path('api/courses/', include(router.urls)),
-    path('api/course_enrollment/', enroll_view),
-    path('api/course_content/', course_content_view),
+    path('api/courses/', include('course.api.urls', 'course_api')),
     path('api/quiz/', include('question.api.urls', 'question_api')),
     #path('api/enrollments/', include('enrollment.api.urls', 'enrollment_api')),
 ]

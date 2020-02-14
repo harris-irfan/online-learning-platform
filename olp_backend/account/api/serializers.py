@@ -8,14 +8,12 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     confirm_password = serializers.CharField(style={'input_type': 'password'}, write_only=True)
 
-
     class Meta:
         model = User
         fields = ['email', 'username', 'first_name', 'last_name', 'password', 'confirm_password']
         extra_kwargs = {
             'password':{'write_only': True}
         }
-
 
     def save(self):
         account = User(email=self.validated_data['email'],
